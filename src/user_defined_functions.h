@@ -648,7 +648,7 @@ double GeffoverG(double a, double k){
 
   double a3    = a * a * a;
   //mu parametrization used in Y3 extensions KP
-  //warning: update the factor with the correct omage DE.
+  //TODO warning: update the factor with the correct omage DE.
   mu *= 1.0 + mu0*(1.0 - Omega/a3)/(1.0 - Omega)
 
 #else
