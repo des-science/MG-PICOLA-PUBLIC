@@ -35,7 +35,7 @@
 //=========================================================//
 // This functions is called right after parameters have    //
 // been read                                               //
-// This is run before starting to compute growth-factors   //                           
+// This is run before starting to compute growth-factors   //
 //=========================================================//
 void init_modified_version(){
 
@@ -155,7 +155,7 @@ void init_modified_version(){
   // Solve background and get the Hubble parameter today
   double h;
   JBD_Solve_Background(wBD, Omegah2, Omegavh2, Omegarh2, &h);
-  
+
   // Set the values we find
   HubbleParam = h;
   Omega       = Omegah2 / HubbleParam / HubbleParam;
@@ -182,7 +182,7 @@ void init_modified_version(){
 #endif
 
 #if defined(EQUATIONOFSTATE_PARAMETRIZATION)
-  
+
   //=================================================================
   // If this is active then we use the (w0,wa) background
   // Not compatible with JBD and other models where we don't have a
@@ -198,9 +198,9 @@ void init_modified_version(){
     printf("\n");
     printf("H(a=0.5) = %7.3f  HLCDM(a=0.5) = %7.3f\n", hubble(0.5), sqrt(Omega/pow(0.5,3) + 1 - Omega));
     printf("H(a=0.1) = %7.3f  HLCDM(a=0.1) = %7.3f\n", hubble(0.1), sqrt(Omega/pow(0.1,3) + 1 - Omega));
-    printf("dHda(a=0.5) = %7.3f  dHLCDMda(a=0.5) = %7.3f\n", 
+    printf("dHda(a=0.5) = %7.3f  dHLCDMda(a=0.5) = %7.3f\n",
         dhubbleda(0.5), 1.0/(2.0 * sqrt(Omega/pow(0.5,3) + 1 - Omega)) * ( -3.0 * Omega / pow(0.5,4) ));
-    printf("dHda(a=0.1) = %7.3f  dHLCDMda(a=0.1) = %7.3f\n", 
+    printf("dHda(a=0.1) = %7.3f  dHLCDMda(a=0.1) = %7.3f\n",
         dhubbleda(0.1), 1.0/(2.0 * sqrt(Omega/pow(0.1,3) + 1 - Omega)) * ( -3.0 * Omega / pow(0.1,4) ));
     fflush(stdout);
   }
@@ -245,11 +245,11 @@ void read_mg_parameters(void **addr, char (*tag)[50], int *id, int (*nt)){
   strcpy(tag[(*nt)], "input_sigma8_is_for_lcdm");
   addr[(*nt)] = &input_sigma8_is_for_lcdm;
   id[(*nt)++] = INT;
-  
+
   strcpy(tag[(*nt)], "inverted_initial_condition");
   addr[(*nt)] = &inverted_initial_condition;
   id[(*nt)++] = INT;
-  
+
   strcpy(tag[(*nt)], "amplitude_fixed_initial_condition");
   addr[(*nt)] = &amplitude_fixed_initial_condition;
   id[(*nt)++] = INT;
@@ -340,13 +340,13 @@ void read_mg_parameters(void **addr, char (*tag)[50], int *id, int (*nt)){
   strcpy(tag[(*nt)], "w_0");
   addr[(*nt)] = &w_0;
   id[(*nt)++] = FLOAT;
-  
+
   strcpy(tag[(*nt)], "w_a");
   addr[(*nt)] = &w_a;
   id[(*nt)++] = FLOAT;
 #endif
 
-#if defined(FOFRGRAVITY) 
+#if defined(FOFRGRAVITY)
 
   strcpy(tag[(*nt)], "fofr0");
   addr[(*nt)] = &fofr0;
@@ -365,7 +365,7 @@ void read_mg_parameters(void **addr, char (*tag)[50], int *id, int (*nt)){
   strcpy(tag[(*nt)], "assb_symm");
   addr[(*nt)] = &assb_symm;
   id[(*nt)++] = FLOAT;
-  
+
   strcpy(tag[(*nt)], "beta_symm");
   addr[(*nt)] = &beta_symm;
   id[(*nt)++] = FLOAT;
@@ -381,19 +381,19 @@ void read_mg_parameters(void **addr, char (*tag)[50], int *id, int (*nt)){
   id[(*nt)++] = FLOAT;
 
 #elif defined(BRANSDICKE)
-  
+
   strcpy(tag[(*nt)], "wBD");
   addr[(*nt)] = &wBD;
   id[(*nt)++] = FLOAT;
-  
+
   strcpy(tag[(*nt)], "Omegah2");
   addr[(*nt)] = &Omegah2;
   id[(*nt)++] = FLOAT;
-  
+
   strcpy(tag[(*nt)], "Omegar2");
   addr[(*nt)] = &Omegarh2;
   id[(*nt)++] = FLOAT;
-  
+
   strcpy(tag[(*nt)], "Omegav2");
   addr[(*nt)] = &Omegavh2;
   id[(*nt)++] = FLOAT;
@@ -408,7 +408,7 @@ void read_mg_parameters(void **addr, char (*tag)[50], int *id, int (*nt)){
 //=========================================================//
 // Hubble function and derivative                          //
 // NB: if these are modified then what we call LCDM growth //
-// factors will also be modified accordingly.              //  
+// factors will also be modified accordingly.              //
 //=========================================================//
 double hubble(double a){
 
@@ -416,7 +416,7 @@ double hubble(double a){
 
   return JBD_Hubble_of_a(a);
 
-#elif defined(EQUATIONOFSTATE_PARAMETRIZATION)  
+#elif defined(EQUATIONOFSTATE_PARAMETRIZATION)
 
   // w(a) = w0 + wa(1-a) parametrization
   return sqrt( Omega/(a*a*a) + (1.0 - Omega) * exp( 3.0 * w_a * (a-1) - 3*(1 + w_0 + w_a) * log(a))  );
@@ -434,7 +434,7 @@ double dhubbleda(double a){
 
   return JBD_dHubbleda_of_a(a);
 
-#elif defined(EQUATIONOFSTATE_PARAMETRIZATION)  
+#elif defined(EQUATIONOFSTATE_PARAMETRIZATION)
 
   // w(a) = w0 + wa(1-a) parametrization
   return 1.0/(2.0 * hubble(a)) * ( -3.0 * Omega / (a*a*a*a) - 3.0 * (1.0 - Omega) * (1.0 + w_0 + w_a*(1-a) ) / a );
@@ -465,7 +465,7 @@ double beta_of_a(double a){
   return 1.0/sqrt(6.0);
 
 #elif defined(MBETAMODEL)
-  
+
   // For the symmetron model we have
   if(a > assb_symm){
     return beta_symm * sqrt(1.0 - pow3(assb_symm/a));
@@ -495,7 +495,7 @@ double mass2_of_a(double a){
   double fac   = Omega/a3 + 4.0 * (1.0-Omega);
   double fac0  = Omega    + 4.0 * (1.0-Omega);
   double mass2 = fac0 * pow( fac / fac0, nfofr + 2.0) / ((1.0 + nfofr) * fofr0);
-  return mass2; 
+  return mass2;
 
 #elif defined(MBETAMODEL)
 
@@ -503,7 +503,7 @@ double mass2_of_a(double a){
   if(a > assb_symm){
     return 0.5 * pow2(2998.0 / range_symm ) * (1.0 - pow3(assb_symm/a));
   } else {
-    return 1.0; // Unimporant as beta == 0, but non-zero value 
+    return 1.0; // Unimporant as beta == 0, but non-zero value
                 // useful to avoid errors in computing phi(a)
   }
 
@@ -512,10 +512,10 @@ double mass2_of_a(double a){
   // double fac   = Omega/a3 + 4.0 * (1.0-Omega);
   // double fac0  = Omega    + 4.0 * (1.0-Omega);
   // double mass2 = fac0 * pow( fac / fac0, nfofr + 2.0) / ((1.0 + nfofr) * fofr0);
-  // return mass2; 
+  // return mass2;
 
 #else
-  
+
   return 0.0;
 
 #endif
@@ -533,10 +533,10 @@ double dmass2_of_ada(double a){
   double fac0  = Omega    + 4.0 * (1.0-Omega);
   double mass2 = fac0 * (nfofr + 2.0) * pow( fac / fac0, nfofr + 1.0) / ((1.0 + nfofr) * fofr0 * fac0);
   mass2 *= -3.0*Omega/a3/a;
-  return mass2; 
+  return mass2;
 
 #elif defined(MBETAMODEL)
-  
+
   // For the symmetron we have
   if(a > assb_symm){
     return 0.5 * pow2(2998.0 / range_symm ) * ( + 3.0 * pow3(assb_symm/a) / a);
@@ -550,7 +550,7 @@ double dmass2_of_ada(double a){
   // double fac0  = Omega    + 4.0 * (1.0-Omega);
   // double mass2 = fac0 * (nfofr + 2.0) * pow( fac / fac0, nfofr + 1.0) / ((1.0 + nfofr) * fofr0 * fac0);
   // mass2 *= -3.0*Omega/a3/a;
-  // return mass2; 
+  // return mass2;
 
 #else
 
@@ -560,7 +560,7 @@ double dmass2_of_ada(double a){
 }
 
 //=========================================================//
-// This is phi_crit(a) = [9 Omegam] / [2beta(a)]*Int_ai^a  // 
+// This is phi_crit(a) = [9 Omegam] / [2beta(a)]*Int_ai^a  //
 //  [ beta_of_a(A) / (mass2_of_a(A) * A * A * A * A) dA ]  //
 // Needed for models defined by beta(a) and m(a). This is  //
 // phi(a)/2beta(a) in the notation of Brax et al. This is  //
@@ -616,8 +616,8 @@ double coupling_function(double a){
 // k is assumed to be in units of h/Mpc                    //
 //=========================================================//
 double GeffoverG(double a, double k){
-  double mu = 1.0; 
-  
+  double mu = 1.0;
+
   if(! modified_gravity_active ) return mu;
   if(  use_lcdm_growth_factors ) return mu;
 
@@ -626,7 +626,7 @@ double GeffoverG(double a, double k){
   double mass2a2 = a * a * mass2_of_a(a);
   double k2 = pow2(k * INVERSE_H0_MPCH);
   if(k2 == 0) return mu;
-  mu *= 1.0 + 2.0 * beta_of_a(a) * beta_of_a(a) * k2 / ( k2 + mass2a2 ); 
+  mu *= 1.0 + 2.0 * beta_of_a(a) * beta_of_a(a) * k2 / ( k2 + mass2a2 );
   return mu;
 
 #elif defined(DGPGRAVITY)
@@ -640,9 +640,16 @@ double GeffoverG(double a, double k){
   return mu;
 
 #elif defined(BRANSDICKE)
-  
+
   mu *= 1.0 + coupling_function(a);
   return mu;
+
+#elif defined(MUDES)
+
+  double a3    = a * a * a;
+  //mu parametrization used in Y3 extensions KP
+  //warning: update the factor with the correct omage DE.
+  mu *= 1.0 + mu0*(1.0 - Omega/a3)/(1.0 - Omega)
 
 #else
 
@@ -652,7 +659,7 @@ double GeffoverG(double a, double k){
 }
 
 //================================================================
-// The massive neutrino modifications enters as en effective 
+// The massive neutrino modifications enters as en effective
 // mu = (f_cdm * delta_cdm + f_nu * delta_nu) / delta_cdm so we treat it here
 // using the transfer-function to compute the term delta_nu/delta_cdm
 // The two functions below are (mu = 1 for LCDM):
@@ -681,7 +688,7 @@ double GeffoverG_neutrino_2LPT(double a, double k){
 //=========================================================//
 // Compute the fifth-force                                 //
 // Have to be called right after PtoMesh is run as this    //
-// routine assumes we have density(x) in mgarray_two       // 
+// routine assumes we have density(x) in mgarray_two       //
 // and density(k) stored in P3D                            //
 //=========================================================//
 void ComputeFifthForce(){
@@ -818,7 +825,7 @@ double Factor_2LPT(double a){
 
   // This is scale-dependent for these models so we compute this elsewhere
   // Only relevant if use_lcdm_growth_factors = 1 for which we return 1.0 above
-  return 1.0; 
+  return 1.0;
 
 #elif defined(DGPGRAVITY)
 
@@ -861,7 +868,7 @@ double fofr_pi_factor(double k, double a){
 //=========================================================//
 double second_order_kernel(double k, double k1, double k2, double costheta, double a){
   if(! modified_gravity_active || use_lcdm_growth_factors) return 0.0;
-  
+
   double gamma2 = 0.0;
 
 #if defined(FOFRGRAVITY)
@@ -894,10 +901,10 @@ double second_order_kernel(double k, double k1, double k2, double costheta, doub
   // ...
 
 #endif
-  
+
   // Common for all models. If test to avoid dividing by zero
   if(k2 > 1e-3 && k1 > 1e-3){
-    gamma2 += 1.5 * Omega / (a * a * a * hubble(a) * hubble(a) ) * 
+    gamma2 += 1.5 * Omega / (a * a * a * hubble(a) * hubble(a) ) *
       ( (GeffoverG(a,k) - GeffoverG(a,k1))*(k1/k2) + (GeffoverG(a,k) - GeffoverG(a,k2))*(k2/k1) ) * costheta/2.0;
   }
   return gamma2;
