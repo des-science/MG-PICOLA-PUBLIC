@@ -9,7 +9,7 @@ EXECPREFIX = MG_PICOLA
 # ========================================
 #MACHINE = SCIAMA2
 #MACHINE = OKEANOS
-MACHINE  = WINTHERMACBOOK
+MACHINE  = NERSC-CORI
 
 # ========================
 # Options for optimization
@@ -284,6 +284,21 @@ endif
 # ====================================
 # Setup libraries and compile the code
 # ====================================
+ifeq ($(MACHINE),NERSC-CORI)
+  CC = mpicc
+ifdef SINGLE_PRECISION
+  FFTW_INCL = -I${FFTW_LIB}/include
+  FFTW_LIBS = -L${FFTW_LIB}/lib/ -lfftw3f_mpi -lfftw3f
+else
+  FFTW_INCL = -I${FFTW_LIB}/include
+  FFTW_LIBS = -L${FFTW_LIB}/lib/ -lfftw3_mpi -lfftw3
+endif
+  GSL_INCL  = -I${GSL_LIB}/include/
+  GSL_LIBS  = -L${GSL_LIB}/lib  -lgsl -lgslcblas
+  MPI_INCL  = -I${MPILIB}/include
+  MPI_LIBS  = -L${MPILIB}/lib/ -lmpi
+endif
+
 ifeq ($(MACHINE),SCIAMA2)
   CC = mpicc
 ifdef SINGLE_PRECISION
@@ -302,6 +317,8 @@ endif
 ifeq ($(MACHINE),WINTHERMACBOOK)
   CC = mpicc-openmpi-gcc6                                        # Add your MPI compiler here
 ifdef SINGLE_PRECISION
+  FFTW_INCL = -I/Users/hans/local/include/
+  FFTW_LIBS = -L/Users/hans/local/lib/ -lfftw3f_mpi -lfftw3f
   FFTW_INCL = -I/Users/hans/local/include/
   FFTW_LIBS = -L/Users/hans/local/lib/ -lfftw3f_mpi -lfftw3f
 else
